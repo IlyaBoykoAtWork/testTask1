@@ -1,0 +1,57 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model product {
+  plu  Int    @id @default(autoincrement())
+  name String
+
+  stock stock[]
+  log   log[]
+}
+
+model stock {
+  shop_id      Int
+  product_plu  Int
+  amount_shelf Int
+
+  // В задании непонятно кто заказывает - магазин или покупатели
+  // Примем что это магазин заказывает у поставщика
+  amount_ordered Int
+
+  shop    shop    @relation(fields: [shop_id], references: [id])
+  product product @relation(fields: [product_plu], references: [plu])
+
+  @@unique([shop_id, product_plu])
+  @@index([shop_id])
+}
+
+model shop {
+  id Int @id @default(autoincrement())
+  // address, etc...
+
+  stock stock[]
+  log   log[]
+}
+
+enum actions {
+  PRODUCT_CREATED
+  STOCK_CREATED
+  STOCK_INCREASED
+  STOCK_DECREASED
+}
+
+model log {
+  shop_id     Int?
+  product_plu Int
+  date        DateTime @unique @default(now())
+  action      actions
+
+  shop    shop?    @relation(fields: [shop_id], references: [id])
+  product product @relation(fields: [product_plu], references: [plu])
+}
