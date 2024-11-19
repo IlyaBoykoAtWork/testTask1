@@ -1,0 +1,14 @@
+{
+	"name": "@monorepo/root",
+	"version": "0.1",
+	"private": true,
+	"workspaces": [
+		"service-product-log",
+		"service-product-stock",
+		"shared"
+	],
+	"dependencies": {
+		"@tanstack/react-query": "^5.60.5",
+		"zod": "^3.23.8"
+	}
+}

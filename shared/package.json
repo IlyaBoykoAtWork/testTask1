@@ -1,0 +1,10 @@
+{
+	"dependencies": {
+		"@prisma/client": "^5.22.0",
+		"prisma": "^5.22.0"
+	},
+	"scripts": {
+		"build": "prisma generate --schema db/*.prisma && prisma db push --schema db/*.prisma",
+		"fmt": "prisma format --schema db/*.prisma"
+	}
+}
