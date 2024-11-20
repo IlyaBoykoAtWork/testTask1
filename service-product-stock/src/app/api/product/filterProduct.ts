@@ -4,7 +4,7 @@ import { z } from "zod"
 import { db } from "@/../../shared/db"
 import { createRouteSearchParams } from "@/app/templates/createRouteSearchParams"
 
-export const { GET, fetch: filterStock } = createRouteSearchParams(
+export const { GET, fetch: filterProduct } = createRouteSearchParams(
 	"GET",
 	"/api/product",
 	z.object({
