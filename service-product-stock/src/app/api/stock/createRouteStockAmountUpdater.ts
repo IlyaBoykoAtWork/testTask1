@@ -3,7 +3,7 @@ import { z } from "zod"
 import type { $Enums, Prisma } from "@prisma/client"
 
 import { createRouteJSON } from "@/app/templates/createRouteJSON"
-import { db } from "@/../prisma"
+import { db } from "@/db"
 
 // Making separate routes for addition and subtraction is impractical,
 // but is required by the ToR.

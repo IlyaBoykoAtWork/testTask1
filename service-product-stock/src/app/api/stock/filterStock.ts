@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { z } from "zod"
 
-import { db } from "@/../prisma"
+import { db } from "@/db"
 import { createRouteSearchParams } from "@/app/templates/createRouteSearchParams"
 
 const zStrIntOpt = z.coerce.number().int().optional()
