@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { z } from "zod"
 
 import { createRouteJSON } from "@/app/templates/createRouteJSON"
-import { db } from "@/../../shared/db"
+import { db } from "@/../prisma"
 
 const zInt = z.number().int()
 

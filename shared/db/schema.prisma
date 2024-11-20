@@ -52,6 +52,6 @@ model log {
   date        DateTime @unique @default(now())
   action      actions
 
-  shop    shop?    @relation(fields: [shop_id], references: [id])
+  shop    shop?   @relation(fields: [shop_id], references: [id])
   product product @relation(fields: [product_plu], references: [plu])
 }
