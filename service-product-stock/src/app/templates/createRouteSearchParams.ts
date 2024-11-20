@@ -18,8 +18,6 @@ export const createRouteSearchParams = createRouteZodCreator<
 				.map(([k, v]) => [k, v!.toString()]),
 		),
 	(method, path, data) => {
-		const url = new URL(path)
-		url.search = new URLSearchParams(data).toString()
-		return fetch(url, { method })
+		return fetch(path + "?" + new URLSearchParams(data), { method })
 	},
 )
