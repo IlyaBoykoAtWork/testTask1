@@ -12,7 +12,8 @@ export default function Throbber({
 			className={clsx(
 				"m-2 h-5 w-5 animate-spin",
 				"drop-shadow-lg",
-				"transition-[height] delay-500",
+				"transition-[height]",
+				enabled && "delay-1000",
 				className,
 			)}
 			style={{
