@@ -13,17 +13,19 @@ import type { ZodType } from "zod"
  * @returns Route creator for the specified data format.
  */
 export default function createRouteZodAbstract<
+	ReqAllowed,
 	ReqRaw, // Serialized data format type
 	Method extends string, // REST method
 >(
 	getDataFromReq: (req: NextRequest) => Promise<ReqRaw> | ReqRaw,
+	serialize: (data: ReqAllowed) => ReqRaw,
 	createFetch: (
 		method: NoInfer<Method>,
 		path: string,
 		data: ReqRaw,
 	) => Promise<Response>,
 ) {
-	return function createRouteZod<Req, Res>(
+	return function createRouteZod<Req extends ReqAllowed, Res>(
 		/** REST method */
 		method: Method,
 		/** URL path */
@@ -44,7 +46,7 @@ export default function createRouteZodAbstract<
 			},
 			/** Fetch data from the server client-side */
 			async fetch(body) {
-				const res = await createFetch(method, path, body)
+				const res = await createFetch(method, path, serialize(body))
 				return await res.json()
 			},
 		} as
@@ -53,7 +55,7 @@ export default function createRouteZodAbstract<
 				[_ in Method]: (req: NextRequest) => Promise<NextResponse>
 			}
 			& {
-				fetch: (body: ReqRaw) => Promise<Res>
+				fetch: (body: Req) => Promise<Res>
 			}
 	}
 }

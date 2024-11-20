@@ -5,6 +5,7 @@ import createRouteZodCreator from "./createRouteZodAbstract"
  */
 export const createRouteJSON = createRouteZodCreator(
 	(req) => req.json(),
+	(data) => data,
 	(method, path, data) =>
 		fetch(path, {
 			method,
