@@ -13,7 +13,12 @@ export const { GET, fetch: filterProduct } = createRouteSearchParams(
 	}),
 	async (body) => {
 		const products = await db.product.findMany({
-			where: body,
+			where: {
+				plu: body.plu,
+				name: {
+					contains: body.name,
+				},
+			},
 		})
 		return NextResponse.json(products)
 	},
