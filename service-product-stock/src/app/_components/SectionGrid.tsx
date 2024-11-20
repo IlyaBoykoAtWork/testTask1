@@ -13,7 +13,6 @@ export default function SectionGrid({
 	return (
 		<section
 			className={clsx(
-				"ml-4 mr-4 p-3",
 				"grid gap-x-4",
 				className,
 			)}
