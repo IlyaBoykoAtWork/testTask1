@@ -26,7 +26,7 @@ export const viewport = {
 export default function RootLayout({ children }) {
 	return (
 		<html lang="en" suppressHydrationWarning>
-			<body className={roboto.className + " antialiased"}>
+			<body className={roboto.className}>
 				<AppRouterCacheProvider>
 					<InitColorSchemeScript attribute="class" />
 					<ThemeProvider theme={theme}>
