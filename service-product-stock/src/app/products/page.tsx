@@ -90,10 +90,13 @@ export default function Products() {
 				)}
 			>
 				{lastData.current?.map((product) => (
-					<Fragment key={product.plu}>
-						<TextLine>{product.plu}</TextLine>
-						<TextLine>{product.name}</TextLine>
-					</Fragment>
+					<>
+						<Fragment key={product.plu}>
+							<TextLine>{product.plu}</TextLine>
+							<TextLine>{product.name}</TextLine>
+						</Fragment>
+						<hr className="opacity-40 col-span-2" />
+					</>
 				))}
 			</SectionGrid>
 		</SectionGrid>
