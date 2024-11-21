@@ -11,15 +11,20 @@ export default function Header() {
 				"bg-slate-400 dark:bg-slate-700",
 			)}
 		>
-			<Link href="/">
+			<Link href="/" className="flex gap-4">
 				<Image
 					src="/favicon.ico"
 					alt="Logo"
 					height={32}
 					width={32}
 				/>
+				<h2 className="text-3xl">Stock</h2>
 			</Link>
-			<h2 className="text-3xl">Stock</h2>
+			{["/products", "/stocks"].map((href) => (
+				<Link key={href} href={href} className="text-2xl">
+					{href}
+				</Link>
+			))}
 		</header>
 	)
 }
