@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import z from "zod"
 
-import { $Enums, db } from "@/../shared/db"
+import { $Enums, db } from "@/db"
 
 const zStrIntOpt = z.coerce.number().int().optional()
 const zStrIntDateOpt = z.coerce.date(z.coerce.number().int()).optional()
@@ -13,9 +13,14 @@ const schema = z.object({
 	date_min: zStrIntDateOpt,
 	date_max: zStrIntDateOpt,
 
-	action: z.enum(
-		Object.values($Enums.actions),
-	),
+	action: z.nativeEnum($Enums.actions).optional(),
+
+	page: z.coerce.number().int().min(0),
+	pageSize: z.coerce.number().pipe(z.union([
+		z.literal(10),
+		z.literal(50),
+		z.literal(100),
+	])),
 }).refine((o) =>
 	// Make sure min is not bigger than max
 	!(o.date_min && o.date_max && o.date_min.valueOf() >= o.date_max.valueOf())
@@ -28,13 +33,13 @@ const schema = z.object({
  */
 export async function GET(req) {
 	const { success, data } = schema.safeParse(
-		await req.json().catch(() => null),
+		Object.fromEntries(req.nextUrl.searchParams.entries()),
 	)
 	if (!success) {
 		return new NextResponse(null, { status: 400 })
 	}
 
-	const logs = await db.log.findMany({
+	return await db.log.findMany({
 		where: {
 			shop_id: data.shop_id,
 			product_plu: data.plu,
@@ -44,7 +49,17 @@ export async function GET(req) {
 			},
 			action: data.action,
 		},
+		orderBy: {
+			date: "desc",
+		},
+		skip: data.pageSize * data.page,
+		take: data.pageSize,
 	})
-
-	return NextResponse.json(logs)
+		.then(NextResponse.json)
+		.catch((e) =>
+			new NextResponse(
+				e instanceof Error ? e.message : null,
+				{ status: 500 },
+			)
+		)
 }
