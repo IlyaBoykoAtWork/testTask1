@@ -11,12 +11,19 @@
 		"fmt": "prisma format && deno fmt --indent-width 4 --no-semicolons --use-tabs --ignore=*/node_modules,*/.next"
 	},
 	"dependencies": {
+		"@emotion/cache": "^11.13.5",
+		"@emotion/react": "^11.13.5",
+		"@emotion/styled": "^11.13.5",
+		"@fontsource/roboto": "^5.1.0",
+		"@mui/icons-material": "^6.1.8",
+		"@mui/material": "^6.1.8",
+		"@mui/material-nextjs": "^6.1.8",
+		"@prisma/client": "^5.22.0",
 		"next": "15.0.3",
+		"prisma": "^5.22.0",
 		"react": "19.0.0-rc-66855b96-20241106",
 		"react-dom": "19.0.0-rc-66855b96-20241106",
-		"zod": "^3.23.8",
-		"@prisma/client": "^5.22.0",
-		"prisma": "^5.22.0"
+		"zod": "^3.23.8"
 	},
 	"devDependencies": {
 		"eslint": "^9.15.0",
