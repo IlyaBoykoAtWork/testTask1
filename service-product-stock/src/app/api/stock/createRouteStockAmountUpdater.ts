@@ -26,7 +26,10 @@ export function createRouteStockAmountUpdater(
 			const [stock] = await db.$transaction([
 				db.stock.update({
 					where: {
-						shop_id_product_plu: body,
+						shop_id_product_plu: {
+							product_plu: body.product_plu,
+							shop_id: body.shop_id,
+						},
 					},
 					data: {
 						amount_shelf: makeUpdater(body.by),
