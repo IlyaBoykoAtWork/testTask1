@@ -4,7 +4,6 @@
 	"private": true,
 	"workspaces": [
 		"service-product-log",
-		"service-product-stock",
-		"shared"
+		"service-product-stock"
 	]
 }

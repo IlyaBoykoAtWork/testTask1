@@ -6,13 +6,17 @@
 		"dev": "next dev --turbopack",
 		"build": "next build",
 		"start": "next start",
-		"lint": "next lint"
+		"lint": "next lint",
+		"prisma": "prisma generate && prisma db push",
+		"fmt": "prisma format && deno fmt --indent-width 4 --no-semicolons --use-tabs --ignore=*/node_modules,*/.next"
 	},
 	"dependencies": {
 		"next": "15.0.3",
 		"react": "19.0.0-rc-66855b96-20241106",
 		"react-dom": "19.0.0-rc-66855b96-20241106",
-		"zod": "^3.23.8"
+		"zod": "^3.23.8",
+		"@prisma/client": "^5.22.0",
+		"prisma": "^5.22.0"
 	},
 	"devDependencies": {
 		"eslint": "^9.15.0",
