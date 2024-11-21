@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import type { ZodType } from "zod"
+import { Prisma } from "@/db"
 
 /**
  * @module
@@ -42,12 +43,29 @@ export default function createRouteZodAbstract<
 					// Validation failed
 					return new NextResponse(null, { status: 400 })
 				}
-				return await handler(data)
+				try {
+					return await handler(data)
+				} catch (e) {
+					if (e instanceof Prisma.PrismaClientKnownRequestError) {
+						return new NextResponse(
+							// Error description is at the last line of the message
+							e.message.substring(
+								e.message.lastIndexOf("\n") + 1,
+							),
+							{ status: 500 },
+						)
+					} else if (e instanceof Error) {
+						return new NextResponse(e.message, { status: 500 })
+					}
+				}
 			},
 			/** Fetch data from the server client-side */
 			async fetch(body) {
 				const res = await createFetch(method, path, serialize(body))
-				return await res.json()
+				if (res.ok) {
+					return res.json()
+				}
+				throw new Error(await res.text())
 			},
 		} as
 			& {

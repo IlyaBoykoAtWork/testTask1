@@ -48,7 +48,13 @@ export default function Products() {
 			return
 		}
 
-		await createProduct({ plu, name })
+		try {
+			await createProduct({ plu, name })
+		} catch (e) {
+			if (e instanceof Error) {
+				return alert("Ошибка!\n" + e.message)
+			} else throw e
+		}
 		await refetch()
 	}
 
