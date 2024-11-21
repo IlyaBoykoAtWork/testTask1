@@ -23,11 +23,15 @@ export default function Products() {
 	const name = filterName || undefined // undefined if empty string
 
 	const { data, isFetching, refetch } = useQuery({
-		queryKey: ["products", useDebounce(plu, 1000), useDebounce(name, 500)],
+		queryKey: [
+			"products",
+			useDebounce(plu, 1000),
+			useDebounce(name, 500),
+		] as const,
 		queryFn: ({ queryKey }) =>
 			filterProduct({
-				plu: queryKey[1] as number | undefined,
-				name: queryKey[2] as string | undefined,
+				plu: queryKey[1],
+				name: queryKey[2],
 			}),
 	})
 	const lastData = useRef(data)
