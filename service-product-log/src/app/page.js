@@ -1,4 +1,3 @@
-// @ts-check
 "use client"
 import { $Enums } from "@/db"
 import {
@@ -125,7 +124,7 @@ export default function Home() {
 		},
 	}, qClient)
 
-	const primaryMouse = matchMedia("(pointer:fine)").matches
+	const primaryMouse = globalThis.matchMedia?.("(pointer:fine)").matches
 
 	return (
 		<>
@@ -147,18 +146,20 @@ export default function Home() {
 				<DialogContent>
 					{[
 						<TextField
+							key={0}
 							helperText="Фильтр для точного значения PLU"
 							type="number"
 							value={filterPLU}
 							onChange={(e) => setFilterPLU(e.target.value)}
 						/>,
 						<TextField
+							key={1}
 							helperText="Фильтр для точного № магазина"
 							type="number"
 							value={filterShop}
 							onChange={(e) => setFilterShop(e.target.value)}
 						/>,
-						<>
+						<React.Fragment key={2}>
 							<DatePicker
 								label="С"
 								value={filterDateMin}
@@ -169,8 +170,9 @@ export default function Home() {
 								value={filterDateMax}
 								onChange={setFilterDateMax}
 							/>
-						</>,
+						</React.Fragment>,
 						<Select
+							key={3}
 							sx={{ minWidth: "20rem" }}
 							displayEmpty
 							value={filterAction}
@@ -217,31 +219,36 @@ export default function Home() {
 					<Table stickyHeader>
 						<TableHead>
 							<TableRow>
-								{columns.map((column) => (
-									<TableCell
-										key={column.field}
-										sx={{
-											"&:hover": {
-												"button": { opacity: 1 },
-											},
-										}}
-									>
-										{column.headerName}
-										{primaryMouse &&
-											(
-												<IconButton
-													sx={{ opacity: 0 }}
-													onClick={setFilterDlgColumn
-														.bind(
-															null,
-															column,
-														)}
-												>
-													<FilterAlt />
-												</IconButton>
-											)}
-									</TableCell>
-								))}
+								{columns.map((column) => {
+									const openFilter = setFilterDlgColumn.bind(
+										null,
+										column,
+									)
+									return (
+										<TableCell
+											key={column.field}
+											sx={{
+												"&:hover": {
+													"button": {
+														opacity: 1,
+													},
+												},
+											}}
+											onClick={primaryMouse || openFilter}
+										>
+											{column.headerName}
+											{primaryMouse &&
+												(
+													<IconButton
+														sx={{ opacity: 0 }}
+														onClick={openFilter}
+													>
+														<FilterAlt />
+													</IconButton>
+												)}
+										</TableCell>
+									)
+								})}
 							</TableRow>
 						</TableHead>
 						<TableBody>
