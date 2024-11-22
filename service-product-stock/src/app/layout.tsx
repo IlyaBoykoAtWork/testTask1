@@ -1,5 +1,7 @@
 import type { Metadata } from "next"
 import "./globals.css"
+import Header from "./_components/Header"
+import ClientProviders from "./_components/ClientProviders"
 
 export const metadata: Metadata = {
 	title: "Stock",
@@ -13,8 +15,11 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className="antialiased">
-				{children}
+			<body className="antialiased flex flex-col">
+				<Header />
+				<ClientProviders>
+					{children}
+				</ClientProviders>
 			</body>
 		</html>
 	)

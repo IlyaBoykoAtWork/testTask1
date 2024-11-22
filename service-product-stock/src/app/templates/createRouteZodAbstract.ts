@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import type { ZodType } from "zod"
+import { Prisma } from "@/db"
 
 /**
  * @module
@@ -13,17 +14,19 @@ import type { ZodType } from "zod"
  * @returns Route creator for the specified data format.
  */
 export default function createRouteZodAbstract<
+	ReqAllowed,
 	ReqRaw, // Serialized data format type
 	Method extends string, // REST method
 >(
 	getDataFromReq: (req: NextRequest) => Promise<ReqRaw> | ReqRaw,
+	serialize: (data: ReqAllowed) => ReqRaw,
 	createFetch: (
 		method: NoInfer<Method>,
 		path: string,
 		data: ReqRaw,
 	) => Promise<Response>,
 ) {
-	return function createRouteZod<Req, Res>(
+	return function createRouteZod<Req extends ReqAllowed, Res>(
 		/** REST method */
 		method: Method,
 		/** URL path */
@@ -40,12 +43,29 @@ export default function createRouteZodAbstract<
 					// Validation failed
 					return new NextResponse(null, { status: 400 })
 				}
-				return await handler(data)
+				try {
+					return await handler(data)
+				} catch (e) {
+					if (e instanceof Prisma.PrismaClientKnownRequestError) {
+						return new NextResponse(
+							// Error description is at the last line of the message
+							e.message.substring(
+								e.message.lastIndexOf("\n") + 1,
+							),
+							{ status: 500 },
+						)
+					} else if (e instanceof Error) {
+						return new NextResponse(e.message, { status: 500 })
+					}
+				}
 			},
 			/** Fetch data from the server client-side */
 			async fetch(body) {
-				const res = await createFetch(method, path, body)
-				return await res.json()
+				const res = await createFetch(method, path, serialize(body))
+				if (res.ok) {
+					return res.json()
+				}
+				throw new Error(await res.text())
 			},
 		} as
 			& {
@@ -53,7 +73,7 @@ export default function createRouteZodAbstract<
 				[_ in Method]: (req: NextRequest) => Promise<NextResponse>
 			}
 			& {
-				fetch: (body: ReqRaw) => Promise<Res>
+				fetch: (body: Req) => Promise<Res>
 			}
 	}
 }

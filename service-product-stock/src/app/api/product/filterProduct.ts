@@ -4,7 +4,7 @@ import { z } from "zod"
 import { db } from "@/db"
 import { createRouteSearchParams } from "@/app/templates/createRouteSearchParams"
 
-export const { GET, fetch: filterStock } = createRouteSearchParams(
+export const { GET, fetch: filterProduct } = createRouteSearchParams(
 	"GET",
 	"/api/product",
 	z.object({
@@ -13,7 +13,12 @@ export const { GET, fetch: filterStock } = createRouteSearchParams(
 	}),
 	async (body) => {
 		const products = await db.product.findMany({
-			where: body,
+			where: {
+				plu: body.plu,
+				name: {
+					contains: body.name,
+				},
+			},
 		})
 		return NextResponse.json(products)
 	},

@@ -11,20 +11,24 @@
 		"fmt": "prisma format && deno fmt --indent-width 4 --no-semicolons --use-tabs --ignore=*/node_modules,*/.next"
 	},
 	"dependencies": {
+		"@prisma/client": "^5.22.0",
+		"@tanstack/react-query": "^5.60.6",
+		"@uidotdev/usehooks": "^2.4.1",
+		"clsx": "^2.1.1",
+		"next": "15.0.3",
+		"prisma": "^5.22.0",
 		"react": "19.0.0-rc-66855b96-20241106",
 		"react-dom": "19.0.0-rc-66855b96-20241106",
-		"next": "15.0.3",
-		"@prisma/client": "^5.22.0",
-		"prisma": "^5.22.0"
+		"zod": "^3.23.8"
 	},
 	"devDependencies": {
-		"typescript": "^5",
 		"@types/node": "^20",
 		"@types/react": "^18",
 		"@types/react-dom": "^18",
+		"eslint": "^9.15.0",
+		"eslint-config-next": "15.0.3",
 		"postcss": "^8",
 		"tailwindcss": "^3.4.1",
-		"eslint": "^9.15.0",
-		"eslint-config-next": "15.0.3"
+		"typescript": "^5"
 	}
 }

@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server"
 import { z } from "zod"
+import type { $Enums, Prisma } from "@prisma/client"
 
 import { createRouteJSON } from "@/app/templates/createRouteJSON"
-import { type $Enums, db, type Prisma } from "@/db"
+import { db } from "@/db"
 
 // Making separate routes for addition and subtraction is impractical,
 // but is required by the ToR.
@@ -25,7 +26,10 @@ export function createRouteStockAmountUpdater(
 			const [stock] = await db.$transaction([
 				db.stock.update({
 					where: {
-						shop_id_product_plu: body,
+						shop_id_product_plu: {
+							product_plu: body.product_plu,
+							shop_id: body.shop_id,
+						},
 					},
 					data: {
 						amount_shelf: makeUpdater(body.by),
