@@ -4,7 +4,7 @@ import z from "zod"
 import { $Enums, db } from "@/db"
 
 const zStrIntOpt = z.coerce.number().int().optional()
-const zStrIntDateOpt = z.coerce.date(z.coerce.number().int()).optional()
+const zStrIntDateOpt = z.coerce.number().int().pipe(z.coerce.date()).optional()
 
 const schema = z.object({
 	shop_id: zStrIntOpt,
@@ -21,10 +21,7 @@ const schema = z.object({
 		z.literal(50),
 		z.literal(100),
 	])),
-}).refine((o) =>
-	// Make sure min is not bigger than max
-	!(o.date_min && o.date_max && o.date_min.valueOf() >= o.date_max.valueOf())
-)
+})
 
 /**
  * Filters and returns logs.
