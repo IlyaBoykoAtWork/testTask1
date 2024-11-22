@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { z } from "zod"
 
 import { createRouteJSON } from "@/app/templates/createRouteJSON"
-import { type $Enums, db, type Prisma } from "@/../../shared/db"
+import { type $Enums, db, type Prisma } from "@/db"
 
 // Making separate routes for addition and subtraction is impractical,
 // but is required by the ToR.
